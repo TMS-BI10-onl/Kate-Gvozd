@@ -1,0 +1,85 @@
+
+-- 1)	Извлечь все столбцы из таблицы Sales.SalesTerritory.
+USE [AdventureWorks2017]
+SELECT *
+FROM  [Sales].[SalesTerritory] 
+
+--2)	Извлечь столбцы TerritoryID и Name из таблицы Sales.SalesTerritory.
+SELECT TerritoryID , NAME 
+FROM [Sales].[SalesTerritory]
+
+-- 3)	Найдите все данные, которые существует для людей из Person.Person с LastName = ‘Norman’.
+SELECT *
+FROM [Person].[Person]
+WHERE LastName = 'Norman'
+
+-- 4)	Найдите все строки из Person.Person, где EmailPromotion не равен 2. 
+SELECT EmailPromotion
+FROM  [Person].[Person]
+WHERE EmailPromotion != 2
+
+5) Какие ещё агрегатные функции существуют в языке T-SQL? Приведите несколько примеров.
+
+-STDEV (Возвращает статистическое стандартное отклонение всех значений в указанном выражении)
+Пример использования:
+SELECT STDEV(Bonus)  
+FROM Sales.SalesPerson;  
+GO  
+
+-VAR (Возвращает статистическую дисперсию всех значений в указанном выражении. За функцией может следовать предложение OVER.)
+Пример использования:
+SELECT VAR(Bonus)  
+FROM Sales.SalesPerson;  
+GO  
+
+-CHECKSUM_AGG (Эта функция возвращает контрольную сумму значений в группе. )
+Пример использования:
+--Get the checksum value before the column value is changed.  
+
+SELECT CHECKSUM_AGG(CAST(Quantity AS INT))  
+FROM Production.ProductInventory;  
+GO  
+
+-APPROX_COUNT_DISTINCT (Эта функция возвращает приблизительное количество уникальных значений, не равных NULL, в группе.)
+Пример использования:
+SELECT O_OrderStatus, APPROX_COUNT_DISTINCT(O_OrderKey) AS Approx_Distinct_OrderKey
+FROM dbo.Orders
+GROUP BY O_OrderStatus
+ORDER BY O_OrderStatus; 
+
+-- 5)	Сколько уникальных PersonType существует для людей из Person.Person с LastName начинающиеся с буквы М или несодержащий 1 в EmailPromotion.
+SELECT DISTINCT PersonType
+FROM [Person].[Person]
+WHERE LastName LIKE'M&'
+OR EmailPromotion != 1
+
+-- 6)	Вывести первых 3 специальных предложений из Sales.SpecialOffer с наибольшимиDiscountPct, которые начинали действовать с 2013-01-01 по 2014-01-01.
+SELECT TOP 3 DiscountPct 
+FROM [Sales].[SpecialOffer]
+WHERE StartDate BETWEEN '2013-01-01' AND '2014-01-01'
+ORDER BY DiscountPct DESC
+
+-- 7)	Найти самый минимальный вес и самый максимальный размер продукта из Production.Product.
+SELECT MIN (Weight) AS MinWeight
+FROM [Production].[Product]
+SELECT MAX (Size) AS MaxSize
+FROM [Production].[Product]
+
+-- 8)	Найти самый минимальный вес и самый максимальный размер продукта для каждой подкатегории ProductSubcategoryID из Production.Product.
+SELECT ProductSubcategoryID, MIN (Weight) AS MinWeight
+FROM [Production].[Product]
+GROUP BY ProductSubcategoryID
+SELECT ProductSubcategoryID, MAX (Size) AS MaxSize
+FROM [Production].[Product]
+GROUP BY ProductSubcategoryID
+
+-- 9)	Найти самый минимальный вес и самый максимальный размер продукта для каждой подкатегории ProductSubcategoryID из Production.Product, где цвет продукта определен(Color).
+
+SELECT ProductSubcategoryID, Color, MIN (Weight) AS MinWeight
+FROM [Production].[Product]
+WHERE Color IS NOT NULL
+GROUP BY ProductSubcategoryID, Color
+SELECT ProductSubcategoryID, Color, MAX (Size) AS MaxSize
+FROM [Production].[Product]
+WHERE Color IS NOT NULL
+GROUP BY ProductSubcategoryID, Color
