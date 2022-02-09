@@ -1,0 +1,28 @@
+Well done!
+
+1.
+a) -0.25
+You could solve this task with one less when-then.
+
+b) 
+Why do I see symbols '&'? It should be '%'. How did this work?
+
+
+3.
+a) -1
+Correct answer:
+
+SELECT Название
+FROM Фирмы-производители 
+WHERE id NOT IN (SELECT преп.id_фирмы
+				FROM Фармпрепараты преп
+						JOIN Продажи прод ON преп.id=прод.id_фармпрепарата
+						JOIN Кассовые_чеки чек ON прод.id_чека=чек.id 
+				WHERE YEAR(Дата)=2019)
+
+c) -1
+Your query won't work. You need group by.
+
+Mark: 7-2=5
++1 for task 4
+6
