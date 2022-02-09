@@ -1,0 +1,86 @@
+/*При каких значениях оконные функции RowNumber, Rank и DenseRank вернут одинаковый результат?
+-Одинаковые значения для данных функций будут одинаковы, если значение , по которому ищем результат, будет уникально(то есть без повторений).
+/*a)	Изучите данные в таблице Production.UnitMeasure. 
+Проверьте, есть ли здесь UnitMeasureCode, начинающиеся на букву ‘Т’. 
+Сколько всего различных кодов здесь есть? 
+Вставьте следующий набор данных в таблицу:
+•	TT1, Test 1, 9 сентября 2020
+•	TT2, Test 2, getdate()
+*/
+SELECT *
+FROM [Production].[UnitMeasure]
+WHERE [UnitMeasureCode]='T' -- просмотр кодов,начинающихся на Т
+SELECT COUNT(1)
+FROM [Production].[UnitMeasure] -- КОЛИЧЕСТВО КОДОВ
+
+INSERT INTO [Production].[UnitMeasure]([UnitMeasureCode],[Name], [ModifiedDate] )
+VALUES ('TT1','TEST 1', '2020-09-09') -- первое значение добавлено в таблицу
+
+INSERT INTO [Production].[UnitMeasure]([UnitMeasureCode],[Name], [ModifiedDate] )
+VALUES ('TT2','TEST 2', 'getdate()') -- второе значение добавлено в таблицу 
+
+SELECT*
+GETDATE()
+
+/*b)Теперь загрузите вставленный набор в новую, не существующую таблицу Production.UnitMeasureTest. 
+Догрузите сюда информацию из Production.UnitMeasure по UnitMeasureCode= ‘CAN’.  
+Посмотрите результат в отсортированном виде по коду. */
+
+SELECT*
+FROM [Production.UnitMeasureTest] 
+
+SELECT [UnitMeasureCode],[Name], [ModifiedDate]
+INTO [Production.UnitMeasureTest]
+FROM [Production].[UnitMeasure] 
+INSERT INTO [Production.UnitMeasureTest]([UnitMeasureCode],[Name], [ModifiedDate] )
+VALUES ('TT1','TEST 1', '2020-09-09')                                                             -- первое значение добавлено в таблицу
+INSERT INTO [Production.UnitMeasureTest]([UnitMeasureCode],[Name], [ModifiedDate] )
+VALUES ('TT2','TEST 2', '2022-02-08 19:38:54.526')                                              -- второе значение добавлено в таблицу
+INSERT INTO [Production.UnitMeasureTest]([UnitMeasureCode],[Name], [ModifiedDate] )
+VALUES ('CAN','Canister', '2008-04-30 00:00:00.000')                                             --    третье значение добавлено в таблицу
+
+/*c)	Измените UnitMeasureCodeдля всего набора из Production.UnitMeasureTestна ‘TTT’.*/
+UPDATE [Production.UnitMeasureTest] 
+SET [UnitMeasureCode] = 'TTT'
+/*d)	Удалите все строки из Production.UnitMeasureTest.
+DELETE
+FROM [Production.UnitMeasureTest] 
+
+/*e)	Найдите информацию из Sales.SalesOrderDetail по заказам 43659,43664.
+С помощью оконных функций MAX, MIN, AVG найдем агрегаты по LineTotalдля каждого SalesOrderID.*/
+
+SELECT*
+    ,AVG([LineTotal]) OVER (PARTITION BY SalesOrderID) AS "Avg"   
+    ,MIN([LineTotal]) OVER (PARTITION BY SalesOrderID) AS "Min"  
+    ,MAX([LineTotal]) OVER (PARTITION BY SalesOrderID) AS "Max"  
+FROM [Sales].[SalesOrderDetail]
+WHERE [SalesOrderID] IN (43659,43664)
+
+/*f)	Изучите данные в объекте Sales.vSalesPerson. Создайте рейтинг cреди продавцов на основе годовых продаж SalesYTD, используя ранжирующую оконную функцию. 
+Добавьте поле Login, состоящий из 3 первых букв фамилии в верхнем регистре + ‘login’ + TerritoryGroup(Nullзаменить на пустое значение). 
+Кто возглавляет рейтинг? А кто возглавлял рейтинг в прошлом году (SalesLastYear).*/
+
+SELECT CONCAT(UPPER(LEFT(pp.[FirstName],3)), 'login' , sp.[TerritoryID])
+      ,RANK() OVER (ORDER BY sp.[SalesYTD]) AS Rank
+FROM [Sales].[SalesPerson] AS sp
+       JOIN [Person].[Person] AS pp 
+       ON sp.[BusinessEntityID]=pp.[BusinessEntityID]
+
+SELECT CONCAT(UPPER(LEFT(pp.[FirstName],3)), 'login' , sp.[TerritoryID]) 
+     ,RANK() OVER (ORDER BY sp.[SalesLastYear]) AS Rank
+FROM [Sales].[SalesPerson] AS sp
+	 JOIN [Person].[Person] AS pp 
+	 ON sp.[BusinessEntityID]=pp.[BusinessEntityID]
+
+/*g)	Найдите первый будний день месяца (FROM не используем). Нужен стандартный код на все времена.*/
+SELECT CASE
+         WHEN Datename(dw, Dateadd(dd, -Datepart(dd, Getdate()) + 1, Getdate())) = 'Saturday' THEN Dateadd(dd, -Datepart(dd, Getdate()) + 3, Getdate())
+         WHEN Datename(dw, Dateadd(dd, -Datepart(dd, Getdate()) + 1, Getdate())) = 'Sunday' THEN Dateadd(dd, -Datepart(dd, Getdate()) + 2, Getdate())
+         ELSE Dateadd(dd, -Datepart(dd, Getdate()) + 1, Getdate())
+ 
+ 6)
+ COUNT(1)=4
+ COUN(NAME)=2
+ COUNT(ID)=4
+ CONTT(*)=4
+ 
