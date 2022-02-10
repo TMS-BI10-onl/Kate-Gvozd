@@ -1,0 +1,15 @@
+Well done!
+
+4.
+a) -0.5
+Where is the answer?
+b)-1
+First of all, you can insert both rows in one statement.
+Secondly, you're inserting hardcoded rows (they are constantas). You needed to do it from select.
+f)-1
+You forgot to added order by DESC. You got wrong result.
+It would be better to use the view in this query, not it's inner code. You can just use ...FROM Sales.vSalesPerson.
+g)-0.25
+Your code is not working because of miising END at the end. I think, you just lost in copying and pasting, but be careful! :)
+
+Mark: 7
