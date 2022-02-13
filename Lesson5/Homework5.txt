@@ -1,0 +1,51 @@
+--6
+CREATE TABLE Patients
+(   ID		        INT identity(1,1) NOT NULL,
+    FirstName		NVARCHAR(50), 
+    LastName		NVARCHAR(50), 
+    SSN                 UNIQUEIDENTIFIER not null PRIMARY KEY DEFAULT NEWID(),
+    Email               AS CONCAT (UPPER(LEFT((FirstName),1)),
+	                           LOWER(LEFT((LastName),3)),
+		                   '@mail.com'),
+    Temp            FLOAT(2),
+    CreatedDate     DATE )
+--7
+INSERT INTO [dbo].[Patients]([FirstName] ,[LastName], [Temp], [CreatedDate])
+VALUES ('Ann', 'Holland',36.6,'2022-01-01'), 
+       ('Bob', 'Dillan', 37.2,'2022-02-02'), 
+       ('Kate','Ross',38.6,'2022-03-03')
+SELECT *
+FROM [dbo].[Patients]
+
+--8
+ALTER TABLE [dbo].[Patients]
+ADD  TempType AS 
+CASE WHEN [Temp]>0 THEN '>0°C'
+     WHEN [Temp]<0 THEN '<0°C'
+END
+
+--9
+CREATE VIEW dbo.Patients_V
+AS SELECT 
+[Temp] AS Celsius, [Temp]*9/5+32 AS farengeight,
+[FirstName] ,[LastName], [CreatedDate]
+FROM [dbo].[Patients]
+
+SELECT*
+FROM dbo.Patients_V
+
+--10
+CREATE FUNCTION 
+dbo.udfPatients
+(@Temp DEC(10,2))
+RETURNS DEC(10,2)
+AS
+BEGIN 
+     RETURN @Temp*9/5+32;
+END;
+SELECT dbo.udfPatients(36.0) farengeight
+
+--11
+DECLARE @d DATETIME = getdate()
+SET @d = dateadd(day, - datepart(day, @d) + 1, convert(date, @d))
+SELECT @d
