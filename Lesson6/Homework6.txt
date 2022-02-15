@@ -1,0 +1,16 @@
+2. Есть системные и пользовательские процедуры(примеры в доке)
+/*3.	Создайте объект с параметрами для обновления значения NationalIDNumber в таблице HumanResources.Employeeдля указанного BusinessEntityID. 
+Т.е. объекту будет подаваться 2 значения: BusinessEntityID (для кого изменяем данные) и NationalIDNumber (на какое значение изменяем).
+С помощью данного объекта попробуйте заменить NationalIDNumber на 879341111 для BusinessEntityID= 15.*/
+
+CREATE PROCEDURE HumanResources.uspChangeNationalIDNumber
+      @BusinessEntityID INT,
+      @NationalIDNumber NVARCHAR(20)
+AS
+BEGIN
+UPDATE [HumanResources].[Employee]
+SET NationalIDNumber=@NationalIDNumber
+WHERE BusinessEntityID=@BusinessEntityID
+END;
+EXEC HumanResources.uspChangeNationalIDNumber
+@BusinessEntityID=15,@NationalIDNumber=879341111
