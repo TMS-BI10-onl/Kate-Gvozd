@@ -1,0 +1,93 @@
+CREATE DATABASE Project
+
+CREATE TABLE Product                         
+(
+	 ProductID int identity(1,1)
+	 CONSTRAINT PK_ProductProductID PRIMARY KEY (ProductID)
+	,ManufacturerName nvarchar(30)
+	,ProductName nvarchar(50) not null
+	,Description nvarchar(150)
+	,CategoryName nvarchar(30)
+	,Price money not null
+	,CostPrice money not null
+)
+
+CREATE TABLE Manager                         
+(
+	 ManagerID int identity(1,1)
+	,CONSTRAINT PK_ManagerManagerID PRIMARY KEY (ManagerID)
+	,FirstName nvarchar(50) not null
+	,LastName nvarchar(50) not null
+	,Birthdate date
+	,PhoneNumber nvarchar(15)
+	,PassportNumber nvarchar(25) not null
+		CONSTRAINT AK_PassportNumber UNIQUE(PassportNumber)
+)
+
+CREATE TABLE Buyer                        
+(
+	 BuyerID int identity(1,1)
+	,CONSTRAINT PK_BuyerBuyerID PRIMARY KEY (BuyerID)
+	,FirstName nvarchar(50) not null
+	,LastName nvarchar(50) 
+	,Email  AS CONCAT (LEFT(FirstName,3),LEFT(LastName,3),'@mail.com')
+	,CONSTRAINT AK_Email UNIQUE(Email) 
+)      
+
+CREATE TABLE Shop                      
+(
+	 ShopID int identity(1,1)
+	,CONSTRAINT PK_ShopShopID PRIMARY KEY CLUSTERED (ShopID)
+	,ShopName nvarchar(30) not null
+	,City nvarchar(30) 
+	,Address nvarchar(30) 
+)    
+CREATE TABLE Delivery                        
+(
+	 DeliveryID int identity(1,1)
+	,CONSTRAINT PK_DeliveryDeliveryID PRIMARY KEY (DeliveryID)
+	,DeliveryType nvarchar(20) not null
+)    
+CREATE TABLE Sale                          
+(
+	 SaleID int  identity(1,1)
+	,CONSTRAINT PK_SaleSaleID PRIMARY KEY (SaleID)
+	,ProductID int
+     CONSTRAINT FK_SaleProductID FOREIGN KEY (ProductID)
+	 REFERENCES dbo.Product(ProductID)
+	,ManagerID int
+	 CONSTRAINT FK_SaleManagerID FOREIGN KEY (ManagerID)
+	 REFERENCES dbo.Manager(ManagerID)
+	,BuyerID int
+	 CONSTRAINT FK_SaleBuyerID FOREIGN KEY (BuyerID)
+	 REFERENCES dbo.Buyer(BuyerID)
+	,DeliveryID int
+	 CONSTRAINT FK_SaleDeliveryID FOREIGN KEY (DeliveryID)
+	 REFERENCES dbo.Delivery(DeliveryID)
+	,SellingAmount int not null
+	,Date date not null
+	,ShopID int
+	 CONSTRAINT FK_SaleShopID FOREIGN KEY (ShopID)
+	 REFERENCES dbo.Shop(ShopID)
+)
+
+2.Напишите скрипт для получения 1 млн человек с различными именами и фамилиями
+Использована база [AdventureWorks2017] для примера.
+
+SELECT TOP 1000000
+      c1.[FirstName],
+      c2.[LastName]
+FROM [Person].[Person] c1
+      CROSS JOIN [Person].[Person] c2
+
+3.3.	Познакомьтесь с обобщенным табличным выражением WITH. Когда можем использовать данную структуру? 
+Чем отличается от подзапроса? 
+Обобщенное табличное выражение (OTB) – это временные результирующие наборы (т.е. результаты выполнения SQL запроса), которые не сохраняются в базе данных в виде объектов, но к ним можно обращаться.
+Можем использовать:
+1.для замены представлений (VIEW), например, в тех случаях, когда нет необходимости сохранять в базе SQL запрос представления, т.е. его определение
+2.Обобщенные табличные выражения повышают читаемость кода путем разделения запроса на логические блоки, и тем самым упрощают работу со сложными запросами
+3.Также OTB предназначены и для многократных ссылок на результирующий набор из одной и той же SQL инструкции
+4.для написания рекурсивных запросов.
+Чем отличается от подзапроса? 
+Обобщенные табличные выражения (ОТВ) могут иметь ссылки на самих себя, а также на ОТВ.
+
