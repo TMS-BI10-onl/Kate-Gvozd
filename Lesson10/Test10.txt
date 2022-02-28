@@ -1,0 +1,36 @@
+--1) Найдите людей и их номера телефонов, код города которых начинается на  4 и заканчивается на 5.( таблицы Person.PersonPhone, Person.Person) 
+
+SELECT p.FirstName,p.LastName,ph.[PhoneNumber]
+FROM [Person].[Person] p
+LEFT JOIN [Person].[PersonPhone] ph ON p.[BusinessEntityID]=ph.[BusinessEntityID]
+WHERE ph.PhoneNumber LIKE '4,%,5'
+SELECT*
+FROM [HumanResources].[Employee]
+--2)Вывести самый дорогой продукт для каждого цвета из [Production].[Product]*/
+SELECT [Name], Color, MAX([StandardCost]) OVER(PARTITION BY Color)  -- самый дорогой продукт для каждого цвета
+FROM [Production].[Product] 
+SELECT [Name],[Color], StandardCost             -- самый дорогой продукт
+FROM [Production].[Product]
+WHERE StandardCost = ( SELECT MAX(StandardCost) FROM [Production].[Product] )
+ORDER BY Color
+--3)Отнести каждого человека из [HumanResources].[Employee] в свою возрастную категорию:
+Adolescence: 17-20
+Adults: 21-59
+Elderly: 60-75
+Senile: 76-90
+SELECT [NationalIDNumber]
+		   CASE WHEN DATEDIFF(year,[BirthDate],GETDATE()) BETWEEN 17 AND 20 THEN 'Adolescence'
+			WHEN DATEDIFF(year,[BirthDate],GETDATE()) BETWEEN 21 AND 59 THEN 'Adults'
+			WHEN DATEDIFF(year,[BirthDate],GETdate()) BETWEEN 60 AND 275THEN 'Elderly'
+			ELSE 'Senile'
+END
+FROM [HumanResources].[Employee] 
+
+4)19 Автобусный парк
+  Т.1 Водитель(ид.водителя,ФИО,стаж,дата рождения)
+  Т.2 Маршрут(ид.маршрута, пункт отбытия,пункт прибытия,км)
+  Т.3 Автобус (номер автобуса,марка,пробег)
+  Т.4 Валидатор(номер автобуса, номер валидатора,чило пассажиров)
+  Т.5 Диспетчерская ( номер дисп., номер автобуса, номер маршрута, ид водителя, адрес)
+  Т.6 Контролер (ид.контролера, номер маршрута, ФИО)
+  Т.7 Тип маршрута (ид.маршрута, тип(например, городской, междугородний и тд)
