@@ -1,0 +1,35 @@
+15.Аптека
+QuantitySold - я воспринимала как количество продаж )
+
+1.Вывести информацию о кол-ве продаж лекарст в зависимости от времени года. 
+Результаты вывести в виде транспорнированной таблицы (оси - время года и название лекарства).
+
+SELECT DrugName, 
+ISNULL([12], 0) + ISNULL([1],0) + ISNULL([2],0) AS Winter, 
+ISNULL([3],0)+ISNULL([4],0)+ISNULL([5],0) AS Spring,
+ISNULL([6],0)+ISNULL([7],0)+ISNULL([8],0) AS Summer,
+ISNULL([9],0)+ISNULL([10],0)+ISNULL([11],0) AS Autumn,
+FROM
+(
+	SELECT s1.SalesDate(DueDate) as month,
+	       s1.QuantitySold,
+               d2.DrugName as name
+	FROM Sales s1
+	LEFT JOIN Drugs d2 ON s1.IDDrug=d2.ID
+) t1
+PIVOT
+(
+	SUM(QuantitySold)
+	FOR month IN ([12],[1],[2], [3], [4], [5],[6],[7],[8],[9],[10],[11])
+) t2
+ORDER BY 1
+
+2.Определить наиболее популярный способ оплаты для каждой аптеки в сельской местности (по количеству продаж).
+
+
+SELECT SUM(S1.[QuantitySold]) OVER (PARTITION BY PT1.Type)  AS MAXSALE  , PT1.Type , LC1.Type, PH1.Address
+FROM SALES S1
+LEFT JOIN PaymentType PT1 ON S1.IDPayType=PT1.IDPType
+LEFT JOIN Pharmacy PH1 ON S1.IDPHarmacy=PH1.IDPHarmacy
+LEFT JOIN LocationCategory LC1 ON PH1.IDLocCat=LC1.IDLocCat
+WHERE LC1.Type= 'Village'

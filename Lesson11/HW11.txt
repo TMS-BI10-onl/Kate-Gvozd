@@ -1,0 +1,90 @@
+CREATE TABLE HW11                 -- создание таблицы для вывода результата
+(
+Function_Name nvarchar(50),
+Function_Count int
+)
+
+SELECT * 
+FROM [dbo].[HW11]
+
+MERGE HW11 target 
+USING 
+(SELECT [a] FROM [dbo].[MERGE]) AS source 
+ON target.Function_Name=source.a
+WHEN NOT MATCHED BY target AND source.a IS NOT NULL
+	THEN INSERT (Function_name,Function_count)
+	VALUES (source.a, '1')
+WHEN MATCHED 
+THEN UPDATE SET target.Function_Count=target.Function_Count+1;
+MERGE HW11 target 
+USING 
+(SELECT [b] FROM [dbo].[MERGE]) AS source 
+ON target.Function_Name=source.b
+WHEN NOT MATCHED BY target AND source.b IS NOT NULL
+	THEN INSERT (Function_name,Function_count)
+	VALUES (source.b, '1')
+WHEN MATCHED 
+THEN UPDATE SET target.Function_Count=target.Function_Count+1;
+MERGE HW11 target 
+USING 
+(SELECT [c] FROM [dbo].[MERGE]) AS source 
+ON target.Function_Name=source.c
+WHEN NOT MATCHED BY target AND source.c IS NOT NULL
+	THEN INSERT (Function_name,Function_count)
+	VALUES (source.c, '1')
+WHEN MATCHED 
+THEN UPDATE SET target.Function_Count=target.Function_Count+1;
+MERGE HW11 target 
+USING 
+(SELECT [d] FROM [dbo].[MERGE]) AS source 
+ON target.Function_Name=source.d
+WHEN NOT MATCHED BY target AND source.d IS NOT NULL
+	THEN INSERT (Function_name,Function_count)
+	VALUES (source.d, '1')
+WHEN MATCHED 
+THEN UPDATE SET target.Function_Count=target.Function_Count+1;
+MERGE HW11 target 
+USING 
+(SELECT [e] FROM [dbo].[MERGE]) AS source 
+ON target.Function_Name=source.e
+WHEN NOT MATCHED BY target AND source.e IS NOT NULL
+	THEN INSERT (Function_name,Function_count)
+	VALUES (source.e, '1')
+WHEN MATCHED 
+THEN UPDATE SET target.Function_Count=target.Function_Count+1;
+MERGE HW11 target 
+USING 
+(SELECT [f] FROM [dbo].[MERGE]) AS source 
+ON target.Function_Name=source.f
+WHEN NOT MATCHED BY target AND source.f IS NOT NULL
+	THEN INSERT (Function_name,Function_count)
+	VALUES (source.f, '1')
+WHEN MATCHED 
+THEN UPDATE SET target.Function_Count=target.Function_Count+1;
+MERGE HW11 target 
+USING 
+(SELECT [g] FROM [dbo].[MERGE]) AS source 
+ON target.Function_Name=source.g
+WHEN NOT MATCHED BY target AND source.g IS NOT NULL
+	THEN INSERT (Function_name,Function_count)
+	VALUES (source.g, '1')
+WHEN MATCHED 
+THEN UPDATE SET target.Function_Count=target.Function_Count+1;
+MERGE HW11 target 
+USING 
+(SELECT [h] FROM [dbo].[MERGE]) AS source 
+ON target.Function_Name=source.h
+WHEN NOT MATCHED BY target AND source.h IS NOT NULL
+	THEN INSERT (Function_name,Function_count)
+	VALUES (source.h, '1')
+WHEN MATCHED 
+THEN UPDATE SET target.Function_Count=target.Function_Count+1;
+MERGE HW11 target 
+USING 
+(SELECT [i] FROM [dbo].[MERGE]) AS source 
+ON target.Function_Name=source.i
+WHEN NOT MATCHED BY target AND source.i IS NOT NULL
+	THEN INSERT (Function_name,Function_count)
+	VALUES (source.i, '1')
+WHEN MATCHED 
+THEN UPDATE SET target.Function_Count=target.Function_Count+1;
