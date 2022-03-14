@@ -1,0 +1,35 @@
+1.Написать запрос на добавление в таблицу manufacturer нового производителя HP из Америки.
+
+INSERT INTO MANUFACTURER (name,country_id)
+VALUES 
+('HP',4)
+Если нет identity на РК
+INSERT INTO MANUFACTURER (id,name,country_id)
+VALUES 
+(1,'HP',4)
+
+2.Написать запрос, благодаря которому возраст пользователя Андрей в таблице user уменьшится в 3 раза.
+UPDATE USER
+SET AGE=AGE/3
+WHERE NAME='Андрей'
+
+3.Найти название продукта с максимальной ценой.
+SELECT Name, Price
+FROM Product
+WHERE Price = (SELECT MAX(Price) AS  maxprice FROM Product)
+
+4.Написать запрос на выборку всех пользователей с телефонами, 
+начинающимися на 3 и заканчивающимися на 4, либо с возрастом > 35.
+
+SELECT us.Name
+FROM USER us
+JOIN PHONE ph ON us.id=ph.user_id
+WHERE ph.Name LIKE '_3&4' OR us.age>35
+
+5.Найти топ 5 пользователей, кто купил больше всего продуктов.
+
+SELECT TOP 5 us.Name,pr.Count
+FROM USER us
+JOIN ORDER or ON us.id=or.user_id
+JOIN PRODUCT pr ON or.product_id=pr.id
+ORDER BY pr.Count DESC
