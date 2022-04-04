@@ -1,0 +1,23 @@
+Well done!
+
+2. -2
+No solution.
+
+3. -0.5
+No need in the subquery. Count() can be used in the order by.
+
+4. -0.5
+Why do we need group by?
+
+5. -1
+You're calculating the whole working experience and the task was to analyse work in different departments. You needed a JobHistory table.
+
+Mark: 6
+
+Test notes:
+KPI font is not the same. Color of labels - too.
+Count of movies - null values is not filtered out. Axis titles are not changed.
+Buttons working hardly because of adding text outside the button, not inside. Your buttons is compressed somewhere and it's quite impossible to tap on them.
+In financial table you're showing the average of inflationpct, but we don't need a summarization.
+
+Test mark: 7
